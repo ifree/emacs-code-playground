@@ -43,13 +43,12 @@
     (plist-get settings :extension)))
 
 (defun pg-temp-file (mode)
-  (if pg-temp-dir
-      (let* ((ext (pg-get-ext mode))
-            (tmp-file
-             (concat pg-temp-dir (make-temp-name "pg") ext)))
-        (shell-command (concat "echo >" tmp-file))
-        tmp-file)
-    (make-temp-file "pg" nil (pg-get-ext mode))))
+  (let* ((dir (or pg-temp-dir temporary-file-directory))
+         (ext (pg-get-ext mode))
+         (tmp-file
+             (concat dir (make-temp-name "pg") ext)))
+    tmp-file))
+
 
 (defun pg-start-coding (mode)
   (interactive (list (completing-read "select major mode "
