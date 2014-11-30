@@ -94,12 +94,12 @@ for `file-name-sans-extension`, %f for file-name-no-directory." )
           (while (search-backward-regexp "%[fFp]" (point-min) t)
              (let ((match (match-string-no-properties 0)))
               (cond
-               ((string= "%F" (match-string-no-properties 0))
+               ((string= "%F" match)
                 (replace-match
                  (file-name-sans-extension file-name) t))
-               ((string= "%f" (match-string-no-properties 0))
+               ((string= "%f" match)
                 (replace-match  file-name))
-               ((string= "%p" (match-string-no-properties 0))
+               ((string= "%p" match)
                 (replace-match
                  (file-name-directory full-file-name)))
                )
