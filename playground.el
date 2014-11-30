@@ -31,18 +31,25 @@
                   "cd %p;java %F"
                   :extension
                   ".java"
-                  ))))
+                  )))
+  "Mode specific mapping.
+Each mode has `:compile`,  `:run` and
+`:extension` target, each target requires a string or (function
+file).  Note: avilable format symbols are %p for full path, %F
+for `file-name-sans-extension`, %f for file-name-no-directory." )
 
 (defvar pg-mode-buffer-name  "*code-playground*")
 (defvar pg-mode-parent-mode nil)
 (defvar pg-temp-dir nil
-  "define temp file location, if `nil` use system defaults.")
+  "Define temp file location, if `nil` use system defaults.")
 
 (defun pg-get-ext (&optional mode)
+  "Get extension by MODE."
   (let ((settings (cdr (assoc (or mode pg-mode-parent-mode) pg-code-setting))))
     (plist-get settings :extension)))
 
 (defun pg-temp-file (mode)
+  "Get temp file name by MODE."
   (let* ((dir (or pg-temp-dir temporary-file-directory))
          (ext (pg-get-ext mode))
          (tmp-file
@@ -51,6 +58,7 @@
 
 
 (defun pg-start-coding (mode)
+  "Start coding with MODE."
   (interactive (list (completing-read "select major mode "
                                       pg-code-setting)))
   (eval `(pg-mode-setup ,(intern mode)))
@@ -61,6 +69,7 @@
 
 
 (defmacro pg-mode-setup (mode)
+  "Setup MODE that derivde from know major mode."
   `(define-derived-mode pg-mode ,mode pg-mode-buffer-name
      (setq pg-mode-parent-mode (quote ,mode))
      
@@ -76,6 +85,7 @@
 
 
 (defun pg-format (cmd-str)
+  "Format CMD-STR."
   (let ((full-file-name (buffer-file-name))
         (file-name (file-name-nondirectory (buffer-file-name))))
     (if (stringp cmd-str)
@@ -99,6 +109,7 @@
       (funcall cmd-str file-name))))
 
 (defun pg-compile (&optional need-run)
+  "Compile file, if NEED-RUN run it withou compile."
   (interactive)
   (let* ((settings (cdr (assoc pg-mode-parent-mode pg-code-setting)))
          (cmd-compile (plist-get settings :compile))
@@ -112,10 +123,12 @@
         (call-interactively 'compile)))))
 
 (defun pg-recompile ()
+  "Recompile file."
   (interactive)
   (recompile))
 
 (defun pg-run ()
+  "Run."
   (interactive)
   (pg-compile t))
 
