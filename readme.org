@@ -1,0 +1,6 @@
+* emacs code playground
+  A playground to write random code.
+** intro
+   Just hit `<M-X> pg-start-coding` and select a mode. Then just coding in the
+   auto generated file. `<f5>` to compile, `<f6>` to recompile, `<f8>` to run.
+   
