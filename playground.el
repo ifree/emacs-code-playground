@@ -9,7 +9,7 @@
 (defvar pg-code-setting
   '(
     (c++-mode . (:compile
-                 "clang++ -Wall -g %f -o %F"
+                 "g++ -Wall -g -std=c++0x %f -o %F"
                  :run
                  "%p/%F"
                  :extension
